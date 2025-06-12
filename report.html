@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="only light" />
+  <meta name="supported-color-schemes" content="light" />
+  <title>CEO Feedback Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #dddddd;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
+      flex: 1 1 auto;
+      color: #000000;
+    }
+
+    header .meta {
+      font-size: 0.9em;
+      color: #555555;
+      text-align: right;
+      flex: 1 1 100%;
+    }
+
+    .flex-container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      flex: 1 1 300px;
+      border: 1px solid #dddddd;
+      box-sizing: border-box;
+    }
+
+    .period-card {
+      flex: 1 1 300px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #222222;
+      font-size: 1.2em;
+    }
+
+    .card p {
+      margin: 0.5em 0;
+      line-height: 1.5;
+    }
+
+    .card ul {
+      margin: 0.5em 0 1em 1.2em;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      font-size: 0.9em;
+      word-break: normal;
+      white-space: normal;
+    }
+
+    th {
+      background: #f5f5f5;
+      text-align: left;
+    }
+
+    td {
+      text-align: right;
+    }
+
+    td:first-child {
+      text-align: left;
+    }
+
+    .up {
+      color: #000000;
+      font-weight: bold;
+    }
+
+    .down {
+      color: #000000;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: right;
+      font-size: 0.85em;
+      color: #777777;
+      border-top: 1px solid #dddddd;
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+
+    /* Responsive adjustments */
+   @media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  header .meta {
+    text-align: left;
+  }
+
+  .card, .period-card {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .table-wrapper table th,
+  .table-wrapper table td {
+    font-size: 4px !important;
+    padding: 4px;
+    white-space: normal !important;
+    word-break: break-word;
+  }
+
+  header h1 {
+    font-size: 1.4em;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Employee Feedback Summary</h1>
+      <div class="meta">Date: 2025-06-12 15:11</div>
+    </header>
+
+    <div class="card">
+      <h3>Executive Summary</h3>
+      <p><strong>Strengths:</strong> New hires feel welcomed and supported within their teams, fostering a collaborative and uplifting atmosphere among colleagues.</p>
+<p><strong>Concerns:</strong> Leadership visibility is lacking, with a top-down approach creating barriers to open communication and collaboration, along with pressure to prioritize revenue over client-centric practices.</p>
+<p><strong>Overall Recommendation:</strong> Enhance leadership visibility through regular, transparent communication and establish feedback mechanisms to encourage dialogue. Balance revenue targets with client-centric initiatives to foster a more inclusive culture.</p>
+    </div>
+
+    <div class="flex-container">
+      <div class="card period-card">
+        <h3>Period Comparison</h3>
+        <p><strong>Current Period:</strong><br>29 May 25 → 12 Jun 25</p>
+        <p><strong>Previous Period:</strong><br>15 May 25 → 29 May 25</p>
+      </div>
+
+      <div class="card">
+        <h3>Feedback Metrics</h3>
+        <div class="table-wrapper">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <th align="left" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Metric</th>
+    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Prev Count</th>
+    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Prev (%)</th>
+    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Curr Count</th>
+    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Curr (%)</th>
+    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Change</th>
+  </tr>
+  <tr>
+    <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Positive</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">3</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">75.0%</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">2</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">50.0%</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">↓ 25.0%</td>
+  </tr>
+  <tr>
+    <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Negative</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">1</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">25.0%</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">2</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">50.0%</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">↑ 25.0%</td>
+  </tr>
+</table>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Critical Flags</h3>
+      <ul>
+        <li>[#135] Leadership visibility is insufficient, creating a top-down communication style that limits open dialogue and collaboration; revenue pressure compromises client-centric practices, suggesting a need for improved operational benchmarks.</li>
+      </ul>
+    </div>
+
+    <footer>
+      Report generated on 2025-06-12 15:11
+    </footer>
+  </div>
+</body>
+</html>
