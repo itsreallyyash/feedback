@@ -969,8 +969,8 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
     <div class="flex-container">
       <div class="card period-card">
         <h3>Period Comparison</h3>
-        <p><strong>Current Period:</strong><br>{curr_start_str} → {curr_end_str}</p>
-        <p><strong>Previous Period:</strong><br>{prev_start_str} → {prev_end_str}</p>
+        <p><strong>Current Period:</strong><br>{curr_start_str} → {curr_end_str} </p>
+        <p><strong>Previous Period:</strong><br>{prev_start_str} → {prev_end_str} </p>
       </div>
 
       <div class="card">
@@ -1000,6 +1000,14 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_neg}</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_neg_pct:.1f}%</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{'↑' if neg_change >= 0 else '↓'} {abs(neg_change):.1f}%</td>
+  </tr>
+    <tr>
+    <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Total</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_total}</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">- -</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_total}</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">- -</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">- -</td>
   </tr>
 </table>
 
