@@ -27,18 +27,19 @@ async def generate_report():
         except Exception:
             df = load_data_fallback()
 
-        # process
-        recent_df, prev_df, start_prev, start_last, end_last = split_periods(df)
+        # process - FIXED: now unpacking all 8 values returned by split_periods
+        recent_df, prev_df, start_prev, start_last, end_last, positive_count, negative_count, total_count = split_periods(df)
         sum_recent = summarize(recent_df)
         sum_prev   = summarize(prev_df)
         recent_fb  = extract_feedback_data(recent_df)
         prev_fb    = extract_feedback_data(prev_df)
 
-        # HTML
+        # HTML - FIXED: now passing all required parameters
         html = generate_html_report(
             sum_recent, sum_prev,
             recent_fb, prev_fb,
-            (start_prev, start_last, end_last)
+            (start_prev, start_last, end_last),
+            positive_count, negative_count, total_count
         )
         return HTMLResponse(html)
 

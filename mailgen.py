@@ -527,7 +527,19 @@ def debug_sharepoint_response():
 def split_periods(df: pd.DataFrame):
     """Split data into recent and previous 2-week periods"""
     from datetime import datetime, timezone
-    
+    # Count Positive, Negative, and Total feedback responses
+    feedback_columns = ["What kind of feedback is it?", "What kind of feedback is it?1"]
+    positive_count = sum(
+        df[col].str.contains("Positive", case=False, na=False).sum()
+        for col in feedback_columns
+        if col in df.columns
+    )
+    negative_count = sum(
+        df[col].str.contains("Negative", case=False, na=False).sum()
+        for col in feedback_columns
+        if col in df.columns
+    )
+    total_count = positive_count + negative_count
     today = datetime.now(timezone.utc).date()
     two_wks_ago = today - timedelta(weeks=2)
     four_wks_ago = today - timedelta(weeks=4)
@@ -535,7 +547,7 @@ def split_periods(df: pd.DataFrame):
 
     recent = df[(df[date_col].dt.date >= two_wks_ago) & (df[date_col].dt.date <= today)]
     previous = df[(df[date_col].dt.date >= four_wks_ago) & (df[date_col].dt.date < two_wks_ago)]
-    return recent, previous, four_wks_ago, two_wks_ago, today
+    return recent, previous, four_wks_ago, two_wks_ago, today, positive_count, negative_count, total_count
 
 def summarize(df: pd.DataFrame):
     """Summarize sentiment counts from feedback type columns"""
@@ -751,7 +763,7 @@ CRITICAL_FLAGS:
         critical_flags = "<li>No critical concerns flagged in the recent period</li>"
         return executive_summary, critical_flags
 
-def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedback, dates):
+def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedback, dates, positive_count, negative_count, total_count):
     """Generate HTML report using the exact template format with AI-generated content"""
     start_prev, start_last, end_last = dates[0], dates[1], dates[2]
     
@@ -980,34 +992,30 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
   <tr>
     <th align="left" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Metric</th>
     <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Prev Count</th>
-    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Prev (%)</th>
     <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Curr Count</th>
-    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Curr (%)</th>
     <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Change</th>
+    <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Overall</th>
   </tr>
   <tr>
     <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Positive</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_pos}</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_pos_pct:.1f}%</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_pos}</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_pos_pct:.1f}%</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{'↑' if pos_change >= 0 else '↓'} {abs(pos_change):.1f}%</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{positive_count}</td>
   </tr>
   <tr>
     <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Negative</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_neg}</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_neg_pct:.1f}%</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_neg}</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_neg_pct:.1f}%</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{'↑' if neg_change >= 0 else '↓'} {abs(neg_change):.1f}%</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{negative_count}</td>
   </tr>
-    <tr>
+  <tr>
     <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Total</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_total}</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">- -</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_total}</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">- -</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">- -</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{total_count}</td>
   </tr>
 </table>
 
@@ -1036,48 +1044,51 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
 </html>'''
     
     return html_content
-
 # ——— Main ———
 if __name__ == "__main__":
-    # Debug SharePoint response first
+    # 0. Debug SharePoint response
     debug_sharepoint_response()
     
-    # 1. Load data from public SharePoint link with fallback
+    # 1. Load data (with fallback)
     try:
         print("\n🔗 Loading data from SharePoint public link...")
         df = load_data_from_public_sharepoint()
     except Exception as e:
-        print(f"\n⚠️ Public SharePoint download failed: {e}")
-        print("💾 Trying local file backup...")
+        print(f"\n⚠️ Public download failed: {e}")
+        print("💾 Trying local fallback…")
         try:
             df = load_data_fallback()
         except Exception as e2:
             print(f"\n❌ Both methods failed.")
             print(f"   SharePoint: {e}")
-            print(f"   Local: {e2}")
-            print(f"\n💡 Next steps:")
-            print(f"   1. Check 'sharepoint_response.html' to see what SharePoint returned")
-            print(f"   2. Download file manually from: {SHAREPOINT_PUBLIC_URL}")
-            print(f"   3. Save as 'Anonymous_Feedback_Form.xlsx' in script directory")
-            print(f"   4. Run script again")
+            print(f"   Local:    {e2}")
             exit(1)
     
-    # 2. Split into periods
-    recent_df, prev_df, start_prev, start_last, end_last = split_periods(df)
+    # 2. Split into periods AND get overall counts
+    recent_df, prev_df, start_prev, start_last, end_last, \
+        positive_count, negative_count, total_count = split_periods(df)
     
-    # 3. Summarize sentiment (calculated in Python)
+    # 3. Summarize sentiment
     sum_recent = summarize(recent_df)
     sum_prev   = summarize(prev_df)
     
-    # 4. Extract feedback data for AI analysis
-    recent_feedback = extract_feedback_data(recent_df)
+    # 4. Extract feedback for AI
+    recent_feedback   = extract_feedback_data(recent_df)
     previous_feedback = extract_feedback_data(prev_df)
     
-    # 5. Generate HTML using the exact template with AI content
-    html = generate_html_report(sum_recent, sum_prev, recent_feedback, previous_feedback, (start_prev, start_last, end_last))
+    # 5. Generate the HTML report
+    html = generate_html_report(
+        sum_recent,
+        sum_prev,
+        recent_feedback,
+        previous_feedback,
+        (start_prev, start_last, end_last),
+        positive_count,
+        negative_count,
+        total_count
+    )
     
-    # 6. Write the report to file
+    # 6. Write it out
     with open(OUTPUT_HTML, "w", encoding="utf-8") as f:
         f.write(html)
-    
     print(f"✅ Report generated: {OUTPUT_HTML}")
