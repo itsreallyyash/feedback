@@ -1037,6 +1037,11 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
     <a href="https://neogroupinfotech-my.sharepoint.com/:x:/g/personal/aashna_mehta_neo-group_in/ERmfzY7yPatEo3fni7EeZ8oBhjxYxuv17V6bcYTEfwlV7w?e=NDFhd4" target="_blank">
         https://neogroupinfotech-my.sharepoint.com/...
     </a>
+        <br>
+    Link to the feedback form: 
+    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=GVfz00I_UEW1Z0QhyDyoe7C8NMx2eRpKh0Iiqq6ujNtUMlAyMzZJS00zVk9IWFpROUxCNFc2U1AzMi4u" target="_blank">
+        https://forms.office.com/Page...
+    </a>
     </footer>
 
   </div>
