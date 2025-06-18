@@ -795,6 +795,7 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
     
     # Generate current timestamp
     current_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M')
+    current_date = datetime.now().strftime('%Y-%m-%d')
     
     # Generate AI content
     print("🤖 Generating AI content for Executive Summary and Critical Flags...")
@@ -1031,7 +1032,7 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
     </div>
 
     <footer>
-    Report generated on {current_timestamp}
+    Report generated on {current_date}
     <br>
     Link to the response sheet: 
     <a href="https://neogroupinfotech-my.sharepoint.com/:x:/g/personal/aashna_mehta_neo-group_in/ERmfzY7yPatEo3fni7EeZ8oBhjxYxuv17V6bcYTEfwlV7w?e=NDFhd4" target="_blank">
