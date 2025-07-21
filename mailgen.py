@@ -1000,7 +1000,8 @@ def generate_ai_content(recent_feedback, previous_feedback, recent_sum, prev_sum
     
     pos_change = recent_pos_pct - prev_pos_pct if prev_total > 0 else 0
     neg_change = recent_neg_pct - prev_neg_pct if prev_total > 0 else 0
-    
+    # Calculate cumulative totals for the two periods only
+
     # Prepare feedback summaries for AI - improved extraction
     recent_positive = []
     recent_negative = []
@@ -1170,6 +1171,9 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
     # Calculate changes
     pos_change = recent_pos_pct - prev_pos_pct if prev_total > 0 else 0
     neg_change = recent_neg_pct - prev_neg_pct if prev_total > 0 else 0
+    cumulative_positive = prev_pos + recent_pos
+    cumulative_negative = prev_neg + recent_neg
+    cumulative_total = prev_total + recent_total
     
     # Format date strings for monthly periods
     prev_start_str = start_prev.strftime("%b %Y")
@@ -1380,18 +1384,25 @@ def generate_html_report(recent_sum, prev_sum, recent_feedback, previous_feedbac
     <th align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Overall</th>
   </tr>
   <tr>
+    <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Positive</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_pos}</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_pos}</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{('↑' if pos_change >= 0 else '↓') + ' ' + f'{abs(pos_change):.1f}%' if prev_total > 0 else 'N/A'}</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{cumulative_positive}</td>
+  </tr>
+  <tr>
     <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Negative</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_neg}</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_neg}</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{('↑' if neg_change >= 0 else '↓') + ' ' + f'{abs(neg_change):.1f}%' if prev_total > 0 else 'N/A'}</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{negative_count}</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{cumulative_negative}</td>
   </tr>
   <tr>
     <td style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">Total</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{prev_total}</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">{recent_total}</td>
     <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd;">- -</td>
-    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{total_count}</td>
+    <td align="right" style="padding: 4px; font-size: 10px; border: 1px solid #dddddd; font-weight: bold;">{cumulative_total}</td>
   </tr>
 </table>
 
